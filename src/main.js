@@ -1,8 +1,9 @@
 import { fetchImages } from './js/pixabay-api.js';
-import { renderImages, showNoImagesMessage } from './js/render-function.js';
+import { renderImages } from './js/render-function.js';
 
 const form = document.querySelector('#search-form');
 const input = document.querySelector('#search-input');
+const loader = document.querySelector('#loader');
 
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
@@ -16,6 +17,9 @@ form.addEventListener('submit', async (event) => {
     return;
   }
 
+ 
+  loader.style.display = 'block';
+
   try {
     const images = await fetchImages(query);
     renderImages(images);
@@ -24,5 +28,8 @@ form.addEventListener('submit', async (event) => {
       title: 'Error',
       message: 'Failed to fetch images. Please try again later.',
     });
+  } finally {
+    
+    loader.style.display = 'none';
   }
 });
